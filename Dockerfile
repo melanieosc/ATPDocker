@@ -31,7 +31,7 @@ RUN LIBS="libociei.so libons.so libnnz12.so libclntshcore.so.12.1 libclntsh.so.1
     # rm ${CLIENT_FILENAME}
 
 # get node app from git repo
-RUN git clone https://github.com/ravi041282/ATPDocker.git
+RUN git clone https://github.com/melanieosc/ATPDocker.git
 RUN mkdir wallet_NODEAPPDB2
 COPY ./wallet_NODEAPPDB2 ./wallet_NODEAPPDB2
 
@@ -41,6 +41,7 @@ ENV LD_LIBRARY_PATH /opt/oracle/lib/instantclient_12_1
 ENV TNS_ADMIN /opt/oracle/lib/wallet_NODEAPPDB2
 ENV ORACLE_HOME /opt/oracle/lib/instantclient_12_1
 ENV PATH /opt/oracle/lib/instantclient_12_1:/opt/oracle/lib/wallet_NODEAPPDB2:/opt/oracle/lib/ATPDocker/aone:/opt/oracle/lib/ATPDocker/aone/node_modules:$PATH
+ENV PS1="\e[36mDocker Container # \e[0m"
 
 RUN cd /opt/oracle/lib/ATPDocker/aone && \
 	npm install oracledb
