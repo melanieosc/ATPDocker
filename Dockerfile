@@ -1,19 +1,19 @@
-FROM frolvlad/alpine-glibc:alpine-3.8
+FROM ubuntu:19.10
 
 # update base image and download required glibc libraries
-RUN apk update && apk add libaio libnsl && \
-    ln -s /usr/lib/libnsl.so.2 /usr/lib/libnsl.so.1
+RUN apt-get update && apt-get -y install libaio1  
+#    ln -s /usr/lib/libnsl.so.2 /usr/lib/libnsl.so.1
 
 #install node, git, python and cleanup cache
-RUN apk add --update \
+RUN apt-get  -y install  \
     nodejs \
-    nodejs-npm \
+    npm \
     git \
     python \
-   && rm -rf /var/cache/apk/*
-
+    unzip \
+    vim
 # get oracle instant client
-ENV CLIENT_FILENAME instantclient-basic-linux.x64-12.1.0.2.0.zip
+ENV CLIENT_FILENAME instantclient-basic-linux.x64-19.3.0.0.0dbru.zip
 
 # set working directory
 WORKDIR /opt/oracle/lib
@@ -23,11 +23,11 @@ ADD ${CLIENT_FILENAME} .
 
 
 # unzip required libs, unzip instant client and create sim links
-RUN LIBS="libociei.so libons.so libnnz12.so libclntshcore.so.12.1 libclntsh.so.12.1" && \
+RUN LIBS="libociei.so libnnz19.so libclntshcore.so.19.1 libclntsh.so.19.1" && \
     unzip ${CLIENT_FILENAME} && \
-    cd instantclient_12_1 && \
+    cd instantclient_19_3 && \
     for lib in ${LIBS}; do cp ${lib} /usr/lib; done && \
-    ln -s /usr/lib/libclntsh.so.12.1 /usr/lib/libclntsh.so 
+    ln -s /usr/lib/libclntsh.so.19.1 /usr/lib/libclntsh.so 
     # rm ${CLIENT_FILENAME}
 
 # get node app from git repo
@@ -36,14 +36,16 @@ RUN mkdir wallet_NODEAPPDB2
 COPY ./wallet_NODEAPPDB2 ./wallet_NODEAPPDB2
 
 #set env variables
-ENV ORACLE_BASE /opt/oracle/lib/instantclient_12_1
-ENV LD_LIBRARY_PATH /opt/oracle/lib/instantclient_12_1
+ENV ORACLE_BASE /opt/oracle/lib/instantclient_19_3
+ENV LD_LIBRARY_PATH /opt/oracle/lib/instantclient_19_3
 ENV TNS_ADMIN /opt/oracle/lib/wallet_NODEAPPDB2
-ENV ORACLE_HOME /opt/oracle/lib/instantclient_12_1
-ENV PATH /opt/oracle/lib/instantclient_12_1:/opt/oracle/lib/wallet_NODEAPPDB2:/opt/oracle/lib/ATPDocker/aone:/opt/oracle/lib/ATPDocker/aone/node_modules:$PATH
+ENV ORACLE_HOME /opt/oracle/lib/instantclient_19_3
+ENV PATH /opt/oracle/lib/instantclient_19_3:/opt/oracle/lib/wallet_NODEAPPDB2:/opt/oracle/lib/ATPDocker/aone:/opt/oracle/lib/ATPDocker/aone/node_modules:$PATH
+ENV force_colour_prompt=yes
 ENV PS1="\e[36mDocker Container # \e[0m"
-
+RUN echo ' PS1="\e[36mDocker Container # \e[0m"' >> /root/.bashrc
 RUN cd /opt/oracle/lib/ATPDocker/aone && \
-	npm install oracledb
+	npm install npm@latest -g && \
+	npm install oracledb@3.1.2
 EXPOSE 3050
-CMD [ "node", "/opt/oracle/lib/ATPDocker/aone/server.js" ]
+#CMD [ "node", "/opt/oracle/lib/ATPDocker/aone/server.js" ]
