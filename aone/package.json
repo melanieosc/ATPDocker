@@ -5,9 +5,8 @@
     "body-parser": "^1.18.3",
     "crypto": "0.0.3",
     "express": "^4.16.3",
-    "jwt-simple": "^0.3.1",
-    "lodash": "^3.10.1"
-    
+    "jwt-simple": "^0.5.6",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {},
   "engines": {

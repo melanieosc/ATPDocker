@@ -36,6 +36,8 @@ RUN LIBS="libociei.so libnnz19.so libclntshcore.so.19.1 libclntsh.so.19.1" && \
 
 # get node app from git repo
 RUN git clone https://github.com/melanieosc/ATPDocker.git
+#RUN git clone --single-branch --branch meltemp https://github.com/melanieosc/ATPDocker.git
+
 RUN mkdir wallet_NODEAPPDB2
 COPY ./wallet_NODEAPPDB2 ./wallet_NODEAPPDB2
 
