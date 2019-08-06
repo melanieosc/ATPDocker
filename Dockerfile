@@ -1,4 +1,4 @@
-FROM ubuntu:19.10
+FROM ubuntu:19.04
 
 # update base image and download required glibc libraries
 RUN apt-get update && apt-get -y install libaio1  
@@ -11,7 +11,11 @@ RUN apt-get  -y install  \
     git \
     python \
     unzip \
-    vim
+    vim  \
+    curl
+# Force install of node from the nodjs repository see https://github.com/nodesource/distributions/blob/master/README.md#debinstall
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN apt-get install -y nodejs
 # get oracle instant client
 ENV CLIENT_FILENAME instantclient-basic-linux.x64-19.3.0.0.0dbru.zip
 
@@ -46,6 +50,6 @@ ENV PS1="\e[36mDocker Container # \e[0m"
 RUN echo ' PS1="\e[36mDocker Container # \e[0m"' >> /root/.bashrc
 RUN cd /opt/oracle/lib/ATPDocker/aone && \
 	npm install npm@latest -g && \
-	npm install oracledb@3.1.2
+	npm install oracledb@4.0.0
 EXPOSE 3050
 #CMD [ "node", "/opt/oracle/lib/ATPDocker/aone/server.js" ]
