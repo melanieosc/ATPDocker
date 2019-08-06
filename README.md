@@ -7,7 +7,7 @@ To build a docker image,
 
 1. Clone repository to your local machine
 2. Provision an Oracle Autonomous Transaction Processing (ATP) database in the Oracle Cloud. Download the credentials zip file
-3. Unzip the database credentials zip file wallet_XXXXX.zip in
+3. Unzip the database credentials zip file wallet_XXXXX.zip in ATPDocker/wallet_NODEAPPDB2 and set the wallet location
 4. (Optional) Create db user 'nodeuser' and grant create session. Otherwise use an existing DB user.
 4. Install docker on your local machine if it doesn't exist
 5. build Dockerfile - $docker build -t aone .
