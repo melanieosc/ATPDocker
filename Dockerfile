@@ -39,6 +39,7 @@ RUN git clone https://github.com/melanieosc/ATPDocker.git
 #RUN git clone --single-branch --branch meltemp https://github.com/melanieosc/ATPDocker.git
 
 RUN mkdir wallet_NODEAPPDB2
+RUN mkdir /opt/oracle/lib/wallet_NODEAPPDB3
 COPY ./wallet_NODEAPPDB2 ./wallet_NODEAPPDB2
 
 #set env variables
