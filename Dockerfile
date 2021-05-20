@@ -1,5 +1,6 @@
-FROM ubuntu:19.04
-
+FROM ubuntu:20.04
+# non-interactive install
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 # update base image and download required glibc libraries
 RUN apt-get update && apt-get -y install libaio1  
 #    ln -s /usr/lib/libnsl.so.2 /usr/lib/libnsl.so.1
@@ -39,7 +40,6 @@ RUN git clone https://github.com/melanieosc/ATPDocker.git
 #RUN git clone --single-branch --branch meltemp https://github.com/melanieosc/ATPDocker.git
 
 RUN mkdir wallet_NODEAPPDB2
-RUN mkdir /opt/oracle/lib/wallet_NODEAPPDB3
 COPY ./wallet_NODEAPPDB2 ./wallet_NODEAPPDB2
 
 #set env variables
